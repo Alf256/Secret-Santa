@@ -104,6 +104,17 @@
   .confetti{position:fixed;top:-12px;width:7px;height:12px;z-index:5;pointer-events:none;animation:fall linear forwards}
   @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
   .hidden{display:none !important}
+  /* Pingouins */
+  .pengs{position:fixed;left:0;right:0;bottom:0;height:120px;pointer-events:none;z-index:0;overflow:hidden}
+  .peng{position:absolute;left:0;width:44px;height:57px;animation:walk linear infinite}
+  .peng svg{width:100%;height:100%;transform-origin:50% 100%;animation:waddle .5s ease-in-out infinite alternate}
+  .peng.back{animation-name:walkback}
+  .peng.back svg{scale:-1 1}
+  .peng.slide svg{animation:none;rotate:80deg;transform-origin:50% 70%}
+  @keyframes walk{from{transform:translateX(-60px)}to{transform:translateX(calc(100vw + 60px))}}
+  @keyframes walkback{from{transform:translateX(calc(100vw + 60px))}to{transform:translateX(-60px)}}
+  @keyframes waddle{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+  @media (prefers-reduced-motion:reduce){.peng,.peng svg{animation:none}.pengs{display:none}}
   @media (max-width:420px){.card{padding:22px}}
 </style>
 <style>
@@ -125,6 +136,25 @@
   <path d="M0 130 C90 108,170 126,250 116 C320 108,360 120,390 114 L390 170 L0 170 Z" fill="#081326"/>
 </svg>
 <canvas id="snow"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="pg" viewBox="0 0 40 52">
+  <ellipse cx="14" cy="49" rx="6" ry="2.5" fill="#f0a040"/><ellipse cx="26" cy="49" rx="6" ry="2.5" fill="#f0a040"/>
+  <ellipse cx="20" cy="31" rx="14" ry="18" fill="#141c2c"/>
+  <ellipse cx="20" cy="34" rx="9.5" ry="13.5" fill="#f6efe2"/>
+  <ellipse cx="7" cy="31" rx="3.5" ry="9" fill="#141c2c" transform="rotate(18 7 31)"/>
+  <ellipse cx="33" cy="31" rx="3.5" ry="9" fill="#141c2c" transform="rotate(-18 33 31)"/>
+  <circle cx="16" cy="19" r="2" fill="#fff"/><circle cx="24" cy="19" r="2" fill="#fff"/>
+  <circle cx="16.4" cy="19.3" r="1.1" fill="#050d1f"/><circle cx="24.4" cy="19.3" r="1.1" fill="#050d1f"/>
+  <path d="M17 23 L23 23 L20 27 Z" fill="#f0a040"/>
+  <path d="M8 14 Q20 -6 32 13 Z" fill="#8e1c24"/><rect x="7" y="12" width="26" height="4" rx="2" fill="#f6efe2"/>
+  <circle cx="31" cy="3" r="3" fill="#f6efe2"/>
+</symbol></defs></svg>
+<div class="pengs" aria-hidden="true">
+  <div class="peng" style="bottom:22px;animation-duration:38s"><svg><use href="#pg"/></svg></div>
+  <div class="peng back" style="bottom:34px;width:34px;height:44px;animation-duration:52s;animation-delay:-20s"><svg><use href="#pg"/></svg></div>
+  <div class="peng" style="bottom:14px;width:38px;height:49px;animation-duration:45s;animation-delay:-30s"><svg><use href="#pg"/></svg></div>
+  <div class="peng slide" style="bottom:8px;animation-duration:14s;animation-delay:-6s"><svg><use href="#pg"/></svg></div>
+</div>
+
 <div class="wrap">
   <header>
     <h1>Secret <em>Santa</em></h1>
@@ -134,7 +164,7 @@
  <!-- 0. Organisateur -->
  <section class="card hidden" id="orga">
    <h2>Lancer le tirage</h2>
-   <p class="hint">Le tirage se fait au hasard sur ce téléphone. Tu obtiens un lien unique à envoyer à tout le monde.Personne ne voit le résultat, toi non plus.</p>
+   <p class="hint">Le tirage se fait au hasard sur ce téléphone. Tu obtiens un lien unique à envoyer à tout le monde. Personne ne voit le résultat, toi non plus.</p>
    <button class="btn-main" id="drawBtn" style="margin-top:4px">Lancer le tirage</button>
    <div class="hidden" id="shareBox">
       <p class="hint" style="margin:22px 0 10px">Lien à envoyer à tout le monde :</p>
