@@ -114,7 +114,20 @@
   @keyframes walk{from{transform:translateX(-60px)}to{transform:translateX(calc(100vw + 60px))}}
   @keyframes walkback{from{transform:translateX(calc(100vw + 60px))}to{transform:translateX(-60px)}}
   @keyframes waddle{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-  @media (prefers-reduced-motion:reduce){.peng svg{animation:none}}
+  .peng.hop svg{animation:hop .9s ease-in-out infinite}
+  @keyframes hop{0%,100%{transform:translateY(0) scaleY(1)}10%{transform:translateY(0) scaleY(.85)}45%{transform:translateY(-22px) scaleY(1.05)}80%{transform:translateY(0) scaleY(1)}}
+  .peng .box2{position:absolute;bottom:0;width:22px;height:20px;background:var(--wine);border-radius:3px;right:-22px}
+  .peng .box2::before{content:"";position:absolute;left:8px;width:6px;top:0;bottom:0;background:var(--gold)}
+  .peng.back .box2{right:auto;left:-22px}
+  .sleigh{position:fixed;top:62%;left:0;width:150px;height:46px;pointer-events:none;z-index:0;opacity:0;animation:fly 32s linear infinite 4s}
+  @keyframes fly{0%{transform:translate(-170px,30px);opacity:.85}22%{transform:translate(calc(100vw + 20px),-30px);opacity:.85}22.1%,100%{opacity:0}}
+  .shoot{position:fixed;top:8%;left:60%;width:110px;height:2px;pointer-events:none;z-index:0;border-radius:2px;opacity:0;
+    background:linear-gradient(90deg,rgba(255,243,220,0),rgba(255,243,220,.9));transform:rotate(-25deg);animation:shoot 9s ease-in infinite 2s}
+  .shoot.s2{top:22%;left:20%;animation-duration:13s;animation-delay:7s}
+  @keyframes shoot{0%{opacity:0;translate:0 0}2%{opacity:1}8%{opacity:0;translate:-180px 85px}100%{opacity:0;translate:-180px 85px}}
+  .twinkle{position:fixed;width:3px;height:3px;border-radius:50%;background:#ffe9c2;pointer-events:none;z-index:0;box-shadow:0 0 6px #ffd08a;animation:tw 3s ease-in-out infinite}
+  @keyframes tw{50%{opacity:.15;transform:scale(.5)}}
+  @media (prefers-reduced-motion:reduce){.peng svg{animation:none}.sleigh,.shoot{display:none}}
   @media (max-width:420px){.card{padding:22px}}
 </style>
 <style>
@@ -153,7 +166,23 @@
   <div class="peng back" style="bottom:34px;width:34px;height:44px;animation-duration:52s;animation-delay:-20s"><svg><use href="#pg"/></svg></div>
   <div class="peng" style="bottom:14px;width:38px;height:49px;animation-duration:45s;animation-delay:-30s"><svg><use href="#pg"/></svg></div>
   <div class="peng slide" style="bottom:8px;animation-duration:14s;animation-delay:-6s"><svg><use href="#pg"/></svg></div>
+  <div class="peng hop" style="bottom:28px;width:36px;height:47px;animation-duration:60s;animation-delay:-12s"><svg><use href="#pg"/></svg></div>
+  <div class="peng back" style="bottom:18px;width:40px;height:52px;animation-duration:70s;animation-delay:-45s"><svg><use href="#pg"/></svg><span class="box2"></span></div>
+  <div class="peng" style="bottom:40px;width:30px;height:39px;animation-duration:58s;animation-delay:-5s"><svg><use href="#pg"/></svg></div>
 </div>
+<div class="shoot" aria-hidden="true"></div><div class="shoot s2" aria-hidden="true"></div>
+<div class="twinkle" style="top:6%;left:12%" aria-hidden="true"></div>
+<div class="twinkle" style="top:15%;left:85%;animation-delay:-1s" aria-hidden="true"></div>
+<div class="twinkle" style="top:30%;left:6%;animation-delay:-2s" aria-hidden="true"></div>
+<div class="twinkle" style="top:4%;left:55%;animation-delay:-1.6s" aria-hidden="true"></div>
+<svg class="sleigh" viewBox="0 0 150 46" aria-hidden="true" fill="#f0b55a">
+  <g id="deer"><ellipse cx="0" cy="20" rx="11" ry="5"/><rect x="-9" y="23" width="2.5" height="10" transform="rotate(20 -8 23)"/><rect x="6" y="23" width="2.5" height="10" transform="rotate(-25 7 23)"/>
+  <path d="M8 18 L15 9 L18 11 L12 20 Z"/><circle cx="17" cy="9" r="3.2"/><path d="M15 6 L13 0 M15 4 L11 2 M18 6 L20 0 M19 3 L23 1" stroke="#f0b55a" stroke-width="1.5" fill="none"/></g>
+  <use href="#deer" x="78"/><use href="#deer" x="108"/>
+  <path d="M60 22 L84 20 M90 22 L114 20" stroke="#f0b55a" stroke-width="1" opacity=".7"/>
+  <path d="M8 22 L60 22 L56 34 L14 34 Z"/><path d="M4 38 Q10 42 18 38 L58 38" stroke="#f0b55a" stroke-width="2.5" fill="none"/>
+  <circle cx="30" cy="13" r="6"/><path d="M24 9 Q30 -2 38 8 Z" fill="#8e1c24"/><rect x="38" y="12" width="14" height="10" rx="2" fill="#8e1c24"/>
+</svg>
 
 <div class="wrap">
   <header>
