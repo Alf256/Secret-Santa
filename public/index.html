@@ -91,7 +91,37 @@
   .gift.open{animation:none;cursor:default}
   .gift.open .lid{transform:translate(40px,-90px) rotate(30deg);opacity:0}
   .gift.open .bow{transform:translate(-50%,-120px) rotate(-30deg);opacity:0}
-  .gift.open .rib-v,.gift.open .box{opacity:0;transition:opacity .5s .3s}
+  .gift.open .rib-v{opacity:0;transition:opacity .4s .2s}
+  .gift .box{z-index:2}
+  /* Gros pingouin qui fouille */
+  .digzone{position:absolute;left:-50px;right:-50px;bottom:0;height:270px;overflow:hidden;pointer-events:none;z-index:1}
+  .bigp{position:absolute;left:50%;bottom:22px;width:92px;height:120px;margin-left:-46px;transform:translateY(130px)}
+  .bigp svg{width:100%;height:100%}
+  .gift.dig .bigp{animation:dig 3.4s ease-in-out forwards}
+  @keyframes dig{
+    0%{transform:translateY(130px)}
+    12%{transform:translateY(-12px)}
+    18%{transform:translateY(0)}
+    28%{transform:translateY(20px) rotate(175deg)}
+    34%{transform:translate(-6px,22px) rotate(160deg)}
+    40%{transform:translate(6px,20px) rotate(190deg)}
+    46%{transform:translate(-6px,22px) rotate(165deg)}
+    52%{transform:translate(6px,20px) rotate(188deg)}
+    58%{transform:translate(0,24px) rotate(172deg)}
+    66%{transform:translateY(130px) rotate(180deg)}
+    67%{transform:translateY(130px) rotate(0)}
+    84%{transform:translateY(-26px)}
+    92%,100%{transform:translateY(-14px)}}
+  .gift.dig .box{animation:shake .25s ease-in-out 1s 7}
+  @keyframes shake{25%{transform:translateX(-3px) rotate(-2deg)}75%{transform:translateX(3px) rotate(2deg)}}
+  .sign{position:absolute;bottom:92%;left:50%;transform:translateX(-50%) rotate(-3deg);opacity:0;
+    background:#e9c58f;border:3px solid #8a5a2b;border-radius:8px;padding:6px 14px;white-space:nowrap;
+    font-family:'Fraunces',serif;font-weight:700;font-size:26px;color:#4a2a10;box-shadow:0 6px 14px rgba(0,0,0,.4)}
+  .sign::before,.sign::after{content:"";position:absolute;top:100%;width:4px;height:30px;background:#8a5a2b}
+  .sign::before{left:22%}.sign::after{right:22%}
+  .gift.dig .sign{animation:signin 3.4s forwards}
+  @keyframes signin{0%,70%{opacity:0}78%,100%{opacity:1}}
+  .bit{position:absolute;left:50%;top:50px;width:9px;height:9px;z-index:1;pointer-events:none;border-radius:2px}
   .tap{color:var(--muted);font-size:15px;font-weight:300}
   .result{display:none;animation:rise .8s ease both}
   .result.show{display:block}
@@ -227,7 +257,7 @@
       <div class="hello" id="hello"></div>
       <div class="halo">
         <button class="gift" id="gift" aria-label="Ouvrir le cadeau">
-           <span class="bow"></span><span class="lid"></span><span class="box"></span><span class="rib-v"></span>
+           <span class="digzone"><span class="bigp"><span class="sign" id="sign"></span><svg viewBox="0 0 40 52"><use href="#pg"/></svg></span></span><span class="bow"></span><span class="lid"></span><span class="box"></span><span class="rib-v"></span>
         </button>
       </div>
       <p class="tap" id="tapTxt">Touche le paquet pour découvrir à qui tu offres.</p>
@@ -328,12 +358,24 @@
     $("hello").textContent = "Salut ";
     const b = document.createElement("b"); b.textContent = me; $("hello").append(b);
     $("target").textContent = pairs[me];
+    $("sign").textContent = pairs[me];
   });
   $("gift").addEventListener("click", () => {
     const g = $("gift");
     if (g.classList.contains("open")) return;
-    g.classList.add("open"); $("tapTxt").classList.add("hidden");
-    setTimeout(() => { $("result").classList.add("show"); confetti(); }, 450);
+    g.classList.add("open","dig"); $("tapTxt").classList.add("hidden");
+    // petits objets qui volent hors du paquet pendant la fouille
+    const cols = ["#f0b55a","#f6efe2","#8e1c24","#ffd08a","#6fa8dc"];
+    for (let i=0;i<16;i++) setTimeout(() => {
+      const b = document.createElement("span"); b.className = "bit";
+      b.style.background = cols[i % cols.length];
+      if (i % 3 === 0) b.style.borderRadius = "50%";
+      g.appendChild(b);
+      const dx = (Math.random()*2-1)*120, dy = -60 - Math.random()*90;
+      b.animate([{transform:"translate(-50%,0) rotate(0)"},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,offset:.5},{transform:`translate(${dx*1.4}px,${dy+160}px) rotate(900deg)`,opacity:0}],{duration:1200,easing:"ease-out",fill:"forwards"});
+      setTimeout(() => b.remove(), 1300);
+    }, 1000 + i*80);
+    setTimeout(() => { $("result").classList.add("show"); confetti(); }, 3100);
   });
   addEventListener("hashchange", () => location.reload());
 
